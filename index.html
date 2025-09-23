@@ -85,38 +85,38 @@
             left: 100%;
         }
 
-        .category-0 {
+        .academic-writing {
             background: linear-gradient(45deg, #ff6b6b, #ee5a52);
             box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
         }
 
-        .category-0:hover {
+        .academic-writing:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
         }
 
-        .category-1 {
+        .flashcard-creation {
             background: linear-gradient(45deg, #4ecdc4, #44a08d);
             box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
         }
 
-        .category-1:hover {
+        .flashcard-creation:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(78, 205, 196, 0.4);
         }
 
-        .category-2 {
+        .communication-social {
             background: linear-gradient(45deg, #45b7d1, #96c93d);
             box-shadow: 0 10px 20px rgba(69, 183, 209, 0.3);
         }
 
-        .category-2:hover {
+        .communication-social:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(69, 183, 209, 0.4);
         }
 
-        /* Category Page Styles */
-        .category-page {
+        /* Flashcard Creation Page Styles */
+        .flashcard-page {
             display: none;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -196,17 +196,6 @@
             transform: scale(1.05);
         }
 
-        .alternative-button.active {
-            background: #007bff !important;
-            border: 1px solid #007bff !important;
-        }
-
-        .alternative-button.active:hover {
-            background: #0056b3 !important;
-            border-color: #0056b3 !important;
-            transform: scale(1.05);
-        }
-
         .copy-button.copied {
             background: #28a745;
             border-color: #28a745;
@@ -223,11 +212,6 @@
             background: #ffffff;
             color: #333;
             min-height: 100px;
-            white-space: pre-wrap;
-            text-align: left;
-        }
-
-        .loading {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -235,13 +219,8 @@
             color: #666;
         }
 
-        .error {
-            color: #dc3545;
-            font-style: italic;
-        }
-
         @media (max-width: 768px) {
-            .container, .category-page {
+            .container, .flashcard-page {
                 padding: 20px;
             }
             
@@ -262,128 +241,148 @@
         <h1>AI Prompt Library</h1>
         <p class="subtitle">Your comprehensive collection of AI prompts for every need</p>
         
-        <div class="buttons-container" id="categoryButtons">
-            <div class="loading">Loading categories...</div>
+        <div class="buttons-container">
+            <button class="main-button academic-writing" onclick="showComingSoon('Academic Writing')">
+                📚 Academic Writing
+            </button>
+            
+            <button class="main-button flashcard-creation" onclick="showFlashcardPage()">
+                🗂️ Flashcard Creation
+            </button>
+            
+            <button class="main-button communication-social" onclick="showComingSoon('Communication/Social')">
+                💬 Communication/Social
+            </button>
         </div>
     </div>
 
-    <!-- Dynamic Category Pages -->
-    <div id="categoryPages"></div>
+    <!-- Flashcard Creation Page -->
+    <div class="flashcard-page" id="flashcardPage">
+        <button class="back-button" onclick="showMainPage()">← Back to Main</button>
+        <h1>Flashcard Creation Prompts</h1>
+        <p class="subtitle">Ready-to-use prompts for creating effective flashcards</p>
+        
+        <div class="code-snippet">
+            <div class="snippet-header">
+                <span class="snippet-title">Step 1. Derive Testable Concepts</span>
+                <button class="copy-button" onclick="copyToClipboard(this, 'snippet1')">Copy</button>
+            </div>
+            <div class="snippet-content" id="snippet1">
+I will give you a resource in text form (lecture notes, textbook excerpt, article, story, biography, or other written work). 
+Your task is to: 
+Extract all unique "testable concepts" (TC) from the resource. A testable concept is a distinct fact, term, relationship, formula, exception, process, cause-effect, application scenario, important date, important person, specific example question, OR, in the case of narrative works, the main idea, character actions or decisions, beliefs or motivations, misunderstandings or conflicts, feelings, and plot-related cause-and-effect events that could reasonably appear on an exam. 
+Count every distinct piece of information as a separate TC. For example, "the cause of a phenomenon" and "the effect of a phenomenon" must be counted as two separate concepts, even if closely related. 
+Adhere strictly to the word count for each concept – every concept must be a concise, scannable phrase between 5 and 15 words. 
+Ignore fluff, filler sentences, or generic advice unless tied to a specific, testable idea. 
+Err on the side of slightly overcounting rather than undercounting to ensure no testable points are missed. 
+Present them as a numbered list. Provide the TC Score – the total number of unique testable concepts. If multiple concepts can be grouped under one broader idea, group them together but still count each subpoint separately for the TC Score. 
+ 
+Output Format 
+Testable Concepts: 
+[Concept 1] 
+[Concept 2] … TC Score: [Number] 
+Ready? I will paste the resource next.
+            </div>
+        </div>
+
+        <div class="code-snippet">
+            <div class="snippet-header">
+                <span class="snippet-title">Step 2. Exam Questions</span>
+                <div class="button-group">
+                    <button class="copy-button" onclick="copyToClipboard(this, 'snippet2')">Copy</button>
+                    <button class="alternative-button" onclick="showAlternative('snippet2')">Alternative</button>
+                </div>
+            </div>
+            <div class="snippet-content" id="snippet2">
+You are an expert test creator specializing in [subject/topic].  Your task is to generate a [#] practice exam question based strictly on the provided [file(s) / document(s) / flashcard set]. 
+The questions must follow the 3 principles of high-yield flashcards and should only select high-yield information (the most testable, important, or conceptually rich material). 
+Principles with Examples 
+1. Atomic (one idea per question) 
+• ✅ Good: What does Kepler's Third Law state about the ratio of orbital period and distance? 
+• ❌ Bad: Explain all three of Kepler's Laws. 
+2. Holistic (integrate with context/associations) 
+• ✅ Good: Why does cue overload make vague flashcards less effective? (Hint: think of the "white objects in your bedroom" example.) 
+• ❌ Bad: What is cue overload? 
+3. Future-Proof (clear enough for your future self) 
+• ✅ Good: According to the article, why is "What does Kepler say?" a poor question compared to specifying "Kepler's Third Law ratio"? 
+• ❌ Bad: What does Kepler say? 
+Requirements 
+• 25%  multiple-choice (4 options each, A–D) 
+• 25%  true/false 
+• 25% short answer (≤7-word model answers) 
+• 25% fill-in-the-blank (use ____ for blanks) 
+Content Source 
+• Use only high-yield information from the source. 
+• Questions must stick to exact concepts, terms, and examples from the material. 
+• Avoid filler, low-yield facts, or redundancy. 
+Balance 
+• At least 50% of questions must test higher-order thinking (application, analysis, synthesis). 
+• Do not repeat the same concept unless needed for mastery. 
+Formatting 
+• Number each question. 
+• For multiple-choice: show correct answer below under Answer:. 
+• For true/false: mark the correct choice. 
+• For short answer: provide concise model answers. 
+• At the end: include a clean numbered Answer Key.
+            </div>
+        </div>
+
+        <div class="code-snippet">
+            <div class="snippet-header">
+                <span class="snippet-title">Step 3. Exam to Anki Conversion</span>
+                <button class="copy-button" onclick="copyToClipboard(this, 'snippet3')">Copy</button>
+            </div>
+            <div class="snippet-content" id="snippet3">
+You are an expert in preparing flashcards for Anki bulk import. Follow these rules exactly every time. 
+INPUT: I will give you exam practice questions in any format (lists, markdown tables, text, images converted to text, etc.). 
+OUTPUT FORMAT (strict): 
+Produce plain text only (no explanations, no commentary, no headers, no code fences). 
+Each line = one flashcard. 
+Each line must contain exactly two fields separated by a single ; (space-semicolon-space). 
+Field 1 (Front) = Question text + Question Choices (if any). 
+Field 2 (Back) = Correct Answer(s). 
+Do not add extra semicolons anywhere, if the source contains semicolons, replace them with commas before output. 
+FRONT rules: 
+If the source has choices, list them directly after the question in the same order as the source, formatted like: A. Choice1 B. Choice2 C. Choice3 with a single space between choices. 
+If choices use numbers (1., 2., …), convert them to letters in-order (A., B., C., …). 
+If no choices exist, the front is just the question text (no appended "Answer:" text or other tags). 
+Trim leading/trailing whitespace, preserve the original wording and capitalization otherwise. 
+BACK rules (exact): 
+If the correct answer is one of the choices, the back must be the exact choice text including its letter prefix (e.g., A. Groups). 
+If multiple answers are correct, list them in the order they appear on the front, separated by commas and a space (e.g., A. Red, C. Blue). 
+For fill-in-the-blank(s), list the correct word/phrase(s) separated by commas in the natural order they appear in the question (e.g., mitosis, meiosis). 
+If the correct answer cannot be determined from the source, put UNSURE as the back. 
+PRESERVE MEANING: Do not change the meaning of any question or answer, do not invent information. Only normalize formatting as required above (whitespace, converting numeric choices to letters, replacing semicolons with commas). 
+SPECIAL CHARACTERS & SAFETY: 
+Replace any semicolons in question text or choices with commas before emitting output. 
+Do not output HTML or markup. 
+Do not include metadata, timestamps, line numbers, bullets, or numbering – only one flashcard per line. 
+EXAMPLES (exact output lines – nothing else):  What defines clusters in statistics? A. Columns B. Groups C. Areas D. None of the above ; A. Groups  Complete the sentence: The capital of France is _____. ; Paris 
+FINAL: Output only the final txt lines (one flashcard per line), nothing else.
+            </div>
+        </div>
+    </div>
 
     <script>
-        let config = {};
-        let currentStates = {}; // Track alternative states for each snippet
-
-        // Load configuration from external JSON file
-        async function loadConfig() {
-            try {
-                const response = await fetch('config.json');
-                if (!response.ok) {
-                    throw new Error('Failed to load configuration');
-                }
-                config = await response.json();
-                initializeApp();
-            } catch (error) {
-                console.error('Error loading config:', error);
-                document.getElementById('categoryButtons').innerHTML = 
-                    '<div class="error">Error loading configuration. Please ensure config.json exists and is valid.</div>';
-            }
-        }
-
-        // Initialize the application with loaded config
-        function initializeApp() {
-            createMainPageButtons();
-            createCategoryPages();
-        }
-
-        // Create main page category buttons
-        function createMainPageButtons() {
-            const container = document.getElementById('categoryButtons');
-            container.innerHTML = '';
-
-            config.categories.forEach((category, index) => {
-                const button = document.createElement('button');
-                button.className = `main-button category-${index}`;
-                button.innerHTML = `${category.icon} ${category.name}`;
-                button.onclick = () => showCategoryPage(index);
-                container.appendChild(button);
-            });
-        }
-
-        // Create dynamic category pages
-        function createCategoryPages() {
-            const container = document.getElementById('categoryPages');
-            container.innerHTML = '';
-
-            config.categories.forEach((category, categoryIndex) => {
-                const page = document.createElement('div');
-                page.className = 'category-page';
-                page.id = `categoryPage${categoryIndex}`;
-
-                let snippetsHtml = '';
-                category.snippets.forEach((snippet, snippetIndex) => {
-                    const snippetId = `snippet_${categoryIndex}_${snippetIndex}`;
-                    const hasAlternative = snippet.alternative && snippet.alternative.content;
-                    
-                    let buttonsHtml = `<button class="copy-button" onclick="copyToClipboard(this, '${snippetId}')">Copy</button>`;
-                    
-                    if (hasAlternative) {
-                        buttonsHtml = `
-                            <div class="button-group">
-                                <button class="copy-button" onclick="copyToClipboard(this, '${snippetId}')">Copy</button>
-                                <button class="alternative-button" onclick="toggleAlternative('${snippetId}', ${categoryIndex}, ${snippetIndex})">Alternative</button>
-                            </div>
-                        `;
-                    }
-
-                    snippetsHtml += `
-                        <div class="code-snippet">
-                            <div class="snippet-header">
-                                <span class="snippet-title">${snippet.title}</span>
-                                ${buttonsHtml}
-                            </div>
-                            <div class="snippet-content" id="${snippetId}">${snippet.content}</div>
-                        </div>
-                    `;
-                });
-
-                page.innerHTML = `
-                    <button class="back-button" onclick="showMainPage()">← Back to Main</button>
-                    <h1>${category.name} Prompts</h1>
-                    <p class="subtitle">${category.subtitle}</p>
-                    ${snippetsHtml}
-                `;
-
-                container.appendChild(page);
-            });
-        }
-
-        // Navigation functions
-        function showCategoryPage(categoryIndex) {
+        function showFlashcardPage() {
             document.getElementById('mainPage').style.display = 'none';
-            
-            // Hide all category pages
-            const allPages = document.querySelectorAll('.category-page');
-            allPages.forEach(page => page.style.display = 'none');
-            
-            // Show selected category page
-            document.getElementById(`categoryPage${categoryIndex}`).style.display = 'block';
+            document.getElementById('flashcardPage').style.display = 'block';
         }
 
         function showMainPage() {
             document.getElementById('mainPage').style.display = 'block';
-            
-            // Hide all category pages
-            const allPages = document.querySelectorAll('.category-page');
-            allPages.forEach(page => page.style.display = 'none');
+            document.getElementById('flashcardPage').style.display = 'none';
         }
 
-        // Copy to clipboard function
+        function showComingSoon(section) {
+            alert(section + ' prompts are coming soon! Stay tuned for updates.');
+        }
+
         function copyToClipboard(button, snippetId) {
             const content = document.getElementById(snippetId).textContent.trim();
             
-            if (!content || content === 'Loading...' || content.includes('Error')) {
-                alert('No content to copy!');
+            if (content === 'Coming soon...') {
+                alert('No content to copy yet!');
                 return;
             }
 
@@ -401,38 +400,77 @@
             });
         }
 
-        // Toggle alternative content
-        function toggleAlternative(snippetId, categoryIndex, snippetIndex) {
+        function showAlternative(snippetId) {
             const contentElement = document.getElementById(snippetId);
             const titleElement = contentElement.parentElement.querySelector('.snippet-title');
             const button = contentElement.parentElement.querySelector('.alternative-button');
-            const snippet = config.categories[categoryIndex].snippets[snippetIndex];
             
-            const stateKey = `${categoryIndex}_${snippetIndex}`;
-            const isActive = currentStates[stateKey] || false;
+            // Check if currently showing alternative content
+            const isActive = button.classList.contains('active');
             
             if (!isActive) {
                 // Switch to alternative
-                if (snippet.alternative) {
-                    titleElement.textContent = snippet.alternative.title || snippet.title;
-                    contentElement.textContent = snippet.alternative.content;
-                    button.textContent = 'Standard';
-                    button.classList.add('active');
-                    currentStates[stateKey] = true;
-                }
+                titleElement.textContent = 'Step 2. Exam Questions Using Example Format';
+                contentElement.textContent = `You are to generate [#] exam questions.
+All information content must come strictly and exclusively from the provided [content source], and all formatting, tone, structure, and style must be modeled directly after the provided [example questions].
+Do not generalize or invent. Every question must follow the sentence structure, phrasing style, level of detail, and formatting conventions of the example questions. Match numbering, labeling, grouping, and spacing exactly as shown in the examples. If the examples contain multiple-choice, fill-in-the-blank, short answer, essay, or mixed formats, you must reproduce the same distribution and format precisely.
+Only use material from the specified content source for the substance of the questions. Do not pull from outside knowledge. The result should read as though it belongs in the same exam as the examples, but with its content drawn entirely from the content source.
+Provide exactly the number of questions requested, no more and no less. Always provide a complete answer key at the end, formatted consistently with the examples.`;
+                button.textContent = 'Standard';
+                button.classList.add('active');
             } else {
                 // Switch back to standard
-                titleElement.textContent = snippet.title;
-                contentElement.textContent = snippet.content;
+                titleElement.textContent = 'Step 2. Exam Questions';
+                contentElement.textContent = `You are an expert test creator specializing in [subject/topic].  Your task is to generate a [#] practice exam question based strictly on the provided [file(s) / document(s) / flashcard set]. 
+The questions must follow the 3 principles of high-yield flashcards and should only select high-yield information (the most testable, important, or conceptually rich material). 
+Principles with Examples 
+1. Atomic (one idea per question) 
+• ✅ Good: What does Kepler's Third Law state about the ratio of orbital period and distance? 
+• ❌ Bad: Explain all three of Kepler's Laws. 
+2. Holistic (integrate with context/associations) 
+• ✅ Good: Why does cue overload make vague flashcards less effective? (Hint: think of the "white objects in your bedroom" example.) 
+• ❌ Bad: What is cue overload? 
+3. Future-Proof (clear enough for your future self) 
+• ✅ Good: According to the article, why is "What does Kepler say?" a poor question compared to specifying "Kepler's Third Law ratio"? 
+• ❌ Bad: What does Kepler say? 
+Requirements 
+• 25%  multiple-choice (4 options each, A–D) 
+• 25%  true/false 
+• 25% short answer (≤7-word model answers) 
+• 25% fill-in-the-blank (use ____ for blanks) 
+Content Source 
+• Use only high-yield information from the source. 
+• Questions must stick to exact concepts, terms, and examples from the material. 
+• Avoid filler, low-yield facts, or redundancy. 
+Balance 
+• At least 50% of questions must test higher-order thinking (application, analysis, synthesis). 
+• Do not repeat the same concept unless needed for mastery. 
+Formatting 
+• Number each question. 
+• For multiple-choice: show correct answer below under Answer:. 
+• For true/false: mark the correct choice. 
+• For short answer: provide concise model answers. 
+• At the end: include a clean numbered Answer Key.`;
                 button.textContent = 'Alternative';
                 button.classList.remove('active');
-                currentStates[stateKey] = false;
             }
         }
 
-        // Add entrance animations
+        // Add some interactive animations
         document.addEventListener('DOMContentLoaded', function() {
-            loadConfig();
+            const buttons = document.querySelectorAll('.main-button');
+            buttons.forEach((button, index) => {
+                setTimeout(() => {
+                    button.style.opacity = '0';
+                    button.style.transform = 'translateY(20px)';
+                    button.style.transition = 'all 0.6s ease';
+                    
+                    setTimeout(() => {
+                        button.style.opacity = '1';
+                        button.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 200);
+            });
         });
     </script>
 </body>
