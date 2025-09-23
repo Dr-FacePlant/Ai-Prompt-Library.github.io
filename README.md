@@ -1,1 +1,1 @@
-# Online-Chess-Journal
+# Ai-Prompt-Library
