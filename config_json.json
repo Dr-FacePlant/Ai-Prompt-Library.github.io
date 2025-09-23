@@ -1,0 +1,97 @@
+{
+  "categories": [
+    {
+      "name": "Academic Writing",
+      "icon": "📚",
+      "subtitle": "Ready-to-use prompts for academic writing tasks",
+      "snippets": [
+        {
+          "title": "Essay Structure Assistant",
+          "content": "Ready to customize - add your essay structure prompt here"
+        },
+        {
+          "title": "Research Paper Outline",
+          "content": "Ready to customize - add your research paper outline prompt here",
+          "alternative": {
+            "title": "Research Paper Outline",
+            "content": "Ready to customize - add your alternative research paper outline prompt here"
+          }
+        },
+        {
+          "title": "Citation Generator",
+          "content": "Ready to customize - add your citation generation prompt here"
+        },
+        {
+          "title": "Literature Review Helper",
+          "content": "Ready to customize - add your literature review prompt here"
+        },
+        {
+          "title": "Thesis Statement Generator",
+          "content": "Ready to customize - add your thesis statement prompt here"
+        }
+      ]
+    },
+    {
+      "name": "Flashcard Creation",
+      "icon": "🗂️",
+      "subtitle": "Ready-to-use prompts for creating effective flashcards",
+      "snippets": [
+        {
+          "title": "Step 1. Derive Testable Concepts",
+          "content": "I will give you a resource in text form (lecture notes, textbook excerpt, article, story, biography, or other written work). \nYour task is to: \nExtract all unique \"testable concepts\" (TC) from the resource. A testable concept is a distinct fact, term, relationship, formula, exception, process, cause-effect, application scenario, important date, important person, specific example question, OR, in the case of narrative works, the main idea, character actions or decisions, beliefs or motivations, misunderstandings or conflicts, feelings, and plot-related cause-and-effect events that could reasonably appear on an exam. \nCount every distinct piece of information as a separate TC. For example, \"the cause of a phenomenon\" and \"the effect of a phenomenon\" must be counted as two separate concepts, even if closely related. \nAdhere strictly to the word count for each concept – every concept must be a concise, scannable phrase between 5 and 15 words. \nIgnore fluff, filler sentences, or generic advice unless tied to a specific, testable idea. \nErr on the side of slightly overcounting rather than undercounting to ensure no testable points are missed. \nPresent them as a numbered list. Provide the TC Score – the total number of unique testable concepts. If multiple concepts can be grouped under one broader idea, group them together but still count each subpoint separately for the TC Score. \n \nOutput Format \nTestable Concepts: \n[Concept 1] \n[Concept 2] … TC Score: [Number] \nReady? I will paste the resource next."
+        },
+        {
+          "title": "Step 2. Exam Questions",
+          "content": "You are an expert test creator specializing in [subject/topic].  Your task is to generate a [#] practice exam question based strictly on the provided [file(s) / document(s) / flashcard set]. \nThe questions must follow the 3 principles of high-yield flashcards and should only select high-yield information (the most testable, important, or conceptually rich material). \nPrinciples with Examples \n1. Atomic (one idea per question) \n• ✅ Good: What does Kepler's Third Law state about the ratio of orbital period and distance? \n• ❌ Bad: Explain all three of Kepler's Laws. \n2. Holistic (integrate with context/associations) \n• ✅ Good: Why does cue overload make vague flashcards less effective? (Hint: think of the \"white objects in your bedroom\" example.) \n• ❌ Bad: What is cue overload? \n3. Future-Proof (clear enough for your future self) \n• ✅ Good: According to the article, why is \"What does Kepler say?\" a poor question compared to specifying \"Kepler's Third Law ratio\"? \n• ❌ Bad: What does Kepler say? \nRequirements \n• 25%  multiple-choice (4 options each, A–D) \n• 25%  true/false \n• 25% short answer (≤7-word model answers) \n• 25% fill-in-the-blank (use ____ for blanks) \nContent Source \n• Use only high-yield information from the source. \n• Questions must stick to exact concepts, terms, and examples from the material. \n• Avoid filler, low-yield facts, or redundancy. \nBalance \n• At least 50% of questions must test higher-order thinking (application, analysis, synthesis). \n• Do not repeat the same concept unless needed for mastery. \nFormatting \n• Number each question. \n• For multiple-choice: show correct answer below under Answer:. \n• For true/false: mark the correct choice. \n• For short answer: provide concise model answers. \n• At the end: include a clean numbered Answer Key.",
+          "alternative": {
+            "title": "Step 2. Exam Questions Using Example Format",
+            "content": "You are to generate [#] exam questions.\nAll information content must come strictly and exclusively from the provided [content source], and all formatting, tone, structure, and style must be modeled directly after the provided [example questions].\nDo not generalize or invent. Every question must follow the sentence structure, phrasing style, level of detail, and formatting conventions of the example questions. Match numbering, labeling, grouping, and spacing exactly as shown in the examples. If the examples contain multiple-choice, fill-in-the-blank, short answer, essay, or mixed formats, you must reproduce the same distribution and format precisely.\nOnly use material from the specified content source for the substance of the questions. Do not pull from outside knowledge. The result should read as though it belongs in the same exam as the examples, but with its content drawn entirely from the content source.\nProvide exactly the number of questions requested, no more and no less. Always provide a complete answer key at the end, formatted consistently with the examples."
+          }
+        },
+        {
+          "title": "Step 3. Exam to Anki Conversion",
+          "content": "You are an expert in preparing flashcards for Anki bulk import. Follow these rules exactly every time. \nINPUT: I will give you exam practice questions in any format (lists, markdown tables, text, images converted to text, etc.). \nOUTPUT FORMAT (strict): \nProduce plain text only (no explanations, no commentary, no headers, no code fences). \nEach line = one flashcard. \nEach line must contain exactly two fields separated by a single ; (space-semicolon-space). \nField 1 (Front) = Question text + Question Choices (if any). \nField 2 (Back) = Correct Answer(s). \nDo not add extra semicolons anywhere, if the source contains semicolons, replace them with commas before output. \nFRONT rules: \nIf the source has choices, list them directly after the question in the same order as the source, formatted like: A. Choice1 B. Choice2 C. Choice3 with a single space between choices. \nIf choices use numbers (1., 2., …), convert them to letters in-order (A., B., C., …). \nIf no choices exist, the front is just the question text (no appended \"Answer:\" text or other tags). \nTrim leading/trailing whitespace, preserve the original wording and capitalization otherwise. \nBACK rules (exact): \nIf the correct answer is one of the choices, the back must be the exact choice text including its letter prefix (e.g., A. Groups). \nIf multiple answers are correct, list them in the order they appear on the front, separated by commas and a space (e.g., A. Red, C. Blue). \nFor fill-in-the-blank(s), list the correct word/phrase(s) separated by commas in the natural order they appear in the question (e.g., mitosis, meiosis). \nIf the correct answer cannot be determined from the source, put UNSURE as the back. \nPRESERVE MEANING: Do not change the meaning of any question or answer, do not invent information. Only normalize formatting as required above (whitespace, converting numeric choices to letters, replacing semicolons with commas). \nSPECIAL CHARACTERS & SAFETY: \nReplace any semicolons in question text or choices with commas before emitting output. \nDo not output HTML or markup. \nDo not include metadata, timestamps, line numbers, bullets, or numbering – only one flashcard per line. \nEXAMPLES (exact output lines – nothing else):  What defines clusters in statistics? A. Columns B. Groups C. Areas D. None of the above ; A. Groups  Complete the sentence: The capital of France is _____. ; Paris \nFINAL: Output only the final txt lines (one flashcard per line), nothing else."
+        }
+      ]
+    },
+    {
+      "name": "Communication/Social",
+      "icon": "💬",
+      "subtitle": "Ready-to-use prompts for communication and social interactions",
+      "snippets": [
+        {
+          "title": "Email Composer",
+          "content": "Ready to customize - add your email composition prompt here"
+        },
+        {
+          "title": "Social Media Content",
+          "content": "Ready to customize - add your social media content prompt here",
+          "alternative": {
+            "title": "Social Media Content",
+            "content": "Ready to customize - add your alternative social media content prompt here"
+          }
+        },
+        {
+          "title": "Professional Networking",
+          "content": "Ready to customize - add your professional networking prompt here"
+        },
+        {
+          "title": "Presentation Script",
+          "content": "Ready to customize - add your presentation script prompt here"
+        },
+        {
+          "title": "Conversation Starter",
+          "content": "Ready to customize - add your conversation starter prompt here",
+          "alternative": {
+            "title": "Conversation Starter",
+            "content": "Ready to customize - add your alternative conversation starter prompt here"
+          }
+        },
+        {
+          "title": "Conflict Resolution",
+          "content": "Ready to customize - add your conflict resolution prompt here"
+        }
+      ]
+    }
+  ]
+}

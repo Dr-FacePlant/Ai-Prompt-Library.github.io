@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Library</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .main-button {
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 400px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .main-button:hover:before {
+            left: 100%;
+        }
+
+        .category-0 {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .category-0:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .category-1 {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .category-1:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(78, 205, 196, 0.4);
+        }
+
+        .category-2 {
+            background: linear-gradient(45deg, #45b7d1, #96c93d);
+            box-shadow: 0 10px 20px rgba(69, 183, 209, 0.3);
+        }
+
+        .category-2:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(69, 183, 209, 0.4);
+        }
+
+        /* Category Page Styles */
+        .category-page {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .back-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .code-snippet {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .snippet-header {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .snippet-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .copy-button, .alternative-button {
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .alternative-button {
+            background: #dc3545;
+            border: 1px solid #dc3545;
+        }
+
+        .copy-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .alternative-button:hover {
+            background: #c82333;
+            border-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        .alternative-button.active {
+            background: #007bff !important;
+            border: 1px solid #007bff !important;
+        }
+
+        .alternative-button.active:hover {
+            background: #0056b3 !important;
+            border-color: #0056b3 !important;
+            transform: scale(1.05);
+        }
+
+        .copy-button.copied {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .snippet-content {
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            background: #ffffff;
+            color: #333;
+            min-height: 100px;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-style: italic;
+            color: #666;
+        }
+
+        .error {
+            color: #dc3545;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container, .category-page {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .main-button {
+                font-size: 1.1rem;
+                padding: 15px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Page -->
+    <div class="container" id="mainPage">
+        <h1>AI Prompt Library</h1>
+        <p class="subtitle">Your comprehensive collection of AI prompts for every need</p>
+        
+        <div class="buttons-container" id="categoryButtons">
+            <div class="loading">Loading categories...</div>
+        </div>
+    </div>
+
+    <!-- Dynamic Category Pages -->
+    <div id="categoryPages"></div>
+
+    <script>
+        let config = {};
+        let currentStates = {}; // Track alternative states for each snippet
+
+        // Load configuration from external JSON file
+        async function loadConfig() {
+            try {
+                const response = await fetch('config.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load configuration');
+                }
+                config = await response.json();
+                initializeApp();
+            } catch (error) {
+                console.error('Error loading config:', error);
+                document.getElementById('categoryButtons').innerHTML = 
+                    '<div class="error">Error loading configuration. Please ensure config.json exists and is valid.</div>';
+            }
+        }
+
+        // Initialize the application with loaded config
+        function initializeApp() {
+            createMainPageButtons();
+            createCategoryPages();
+        }
+
+        // Create main page category buttons
+        function createMainPageButtons() {
+            const container = document.getElementById('categoryButtons');
+            container.innerHTML = '';
+
+            config.categories.forEach((category, index) => {
+                const button = document.createElement('button');
+                button.className = `main-button category-${index}`;
+                button.innerHTML = `${category.icon} ${category.name}`;
+                button.onclick = () => showCategoryPage(index);
+                container.appendChild(button);
+            });
+        }
+
+        // Create dynamic category pages
+        function createCategoryPages() {
+            const container = document.getElementById('categoryPages');
+            container.innerHTML = '';
+
+            config.categories.forEach((category, categoryIndex) => {
+                const page = document.createElement('div');
+                page.className = 'category-page';
+                page.id = `categoryPage${categoryIndex}`;
+
+                let snippetsHtml = '';
+                category.snippets.forEach((snippet, snippetIndex) => {
+                    const snippetId = `snippet_${categoryIndex}_${snippetIndex}`;
+                    const hasAlternative = snippet.alternative && snippet.alternative.content;
+                    
+                    let buttonsHtml = `<button class="copy-button" onclick="copyToClipboard(this, '${snippetId}')">Copy</button>`;
+                    
+                    if (hasAlternative) {
+                        buttonsHtml = `
+                            <div class="button-group">
+                                <button class="copy-button" onclick="copyToClipboard(this, '${snippetId}')">Copy</button>
+                                <button class="alternative-button" onclick="toggleAlternative('${snippetId}', ${categoryIndex}, ${snippetIndex})">Alternative</button>
+                            </div>
+                        `;
+                    }
+
+                    snippetsHtml += `
+                        <div class="code-snippet">
+                            <div class="snippet-header">
+                                <span class="snippet-title">${snippet.title}</span>
+                                ${buttonsHtml}
+                            </div>
+                            <div class="snippet-content" id="${snippetId}">${snippet.content}</div>
+                        </div>
+                    `;
+                });
+
+                page.innerHTML = `
+                    <button class="back-button" onclick="showMainPage()">← Back to Main</button>
+                    <h1>${category.name} Prompts</h1>
+                    <p class="subtitle">${category.subtitle}</p>
+                    ${snippetsHtml}
+                `;
+
+                container.appendChild(page);
+            });
+        }
+
+        // Navigation functions
+        function showCategoryPage(categoryIndex) {
+            document.getElementById('mainPage').style.display = 'none';
+            
+            // Hide all category pages
+            const allPages = document.querySelectorAll('.category-page');
+            allPages.forEach(page => page.style.display = 'none');
+            
+            // Show selected category page
+            document.getElementById(`categoryPage${categoryIndex}`).style.display = 'block';
+        }
+
+        function showMainPage() {
+            document.getElementById('mainPage').style.display = 'block';
+            
+            // Hide all category pages
+            const allPages = document.querySelectorAll('.category-page');
+            allPages.forEach(page => page.style.display = 'none');
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(button, snippetId) {
+            const content = document.getElementById(snippetId).textContent.trim();
+            
+            if (!content || content === 'Loading...' || content.includes('Error')) {
+                alert('No content to copy!');
+                return;
+            }
+
+            navigator.clipboard.writeText(content).then(() => {
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(() => {
+                alert('Failed to copy to clipboard');
+            });
+        }
+
+        // Toggle alternative content
+        function toggleAlternative(snippetId, categoryIndex, snippetIndex) {
+            const contentElement = document.getElementById(snippetId);
+            const titleElement = contentElement.parentElement.querySelector('.snippet-title');
+            const button = contentElement.parentElement.querySelector('.alternative-button');
+            const snippet = config.categories[categoryIndex].snippets[snippetIndex];
+            
+            const stateKey = `${categoryIndex}_${snippetIndex}`;
+            const isActive = currentStates[stateKey] || false;
+            
+            if (!isActive) {
+                // Switch to alternative
+                if (snippet.alternative) {
+                    titleElement.textContent = snippet.alternative.title || snippet.title;
+                    contentElement.textContent = snippet.alternative.content;
+                    button.textContent = 'Standard';
+                    button.classList.add('active');
+                    currentStates[stateKey] = true;
+                }
+            } else {
+                // Switch back to standard
+                titleElement.textContent = snippet.title;
+                contentElement.textContent = snippet.content;
+                button.textContent = 'Alternative';
+                button.classList.remove('active');
+                currentStates[stateKey] = false;
+            }
+        }
+
+        // Add entrance animations
+        document.addEventListener('DOMContentLoaded', function() {
+            loadConfig();
+        });
+    </script>
+</body>
+</html>
