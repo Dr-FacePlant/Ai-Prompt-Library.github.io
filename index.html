@@ -410,12 +410,21 @@ FINAL: Output only the final txt lines (one flashcard per line), nothing else.
             
             if (!isActive) {
                 // Switch to alternative
-                titleElement.textContent = 'Step 2. Exam Questions Using Example Format';
-                contentElement.textContent = `You are to generate [#] exam questions.
-All information content must come strictly and exclusively from the provided [content source], and all formatting, tone, structure, and style must be modeled directly after the provided [example questions].
-Do not generalize or invent. Every question must follow the sentence structure, phrasing style, level of detail, and formatting conventions of the example questions. Match numbering, labeling, grouping, and spacing exactly as shown in the examples. If the examples contain multiple-choice, fill-in-the-blank, short answer, essay, or mixed formats, you must reproduce the same distribution and format precisely.
-Only use material from the specified content source for the substance of the questions. Do not pull from outside knowledge. The result should read as though it belongs in the same exam as the examples, but with its content drawn entirely from the content source.
-Provide exactly the number of questions requested, no more and no less. Always provide a complete answer key at the end, formatted consistently with the examples.`;
+                titleElement.textContent = 'Step 2. Exam Questions With Scenerio';
+                contentElement.textContent = `You are to generate exactly [#] exam questions.
+Rules:
+
+Scenario Requirement: Every question must begin with a short, specific scenario involving a named person (e.g., "Marisol enjoys her first cup of coffee in the morning."). The scenario must be 1–2 sentences long and set up a real-world situation that connects to the content. After the scenario, you must ask the exam question in the same style as the examples (e.g., "Which of the following statements correctly describes…").
+Formatting and Style: Each question must be multiple-choice with exactly 4 answer options (A–D). The style, tone, and length of questions and answer options must match the example questions exactly. Numbering must start at 1. and continue sequentially.
+Content Restriction: All factual material must come strictly and exclusively from the provided [content source]. Do not invent or generalize beyond what is in the source.
+Answer Key: Provide a complete Answer Key at the end, formatted like this:
+
+Answer Key
+1. C
+2. A
+3. B
+...
+Important: Every question must look like it belongs in the same set as the example questions. This means each one has a person's name + scenario, a question tied to that scenario, 4 options, and consistent formatting.`;
                 button.textContent = 'Standard';
                 button.classList.add('active');
             } else {
