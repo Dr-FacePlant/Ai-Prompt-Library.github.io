@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Library</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .main-button {
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 400px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-button:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .main-button:hover:before {
+            left: 100%;
+        }
+
+        .academic-writing {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .academic-writing:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .flashcard-creation {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            box-shadow: 0 10px 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .flashcard-creation:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(78, 205, 196, 0.4);
+        }
+
+        .communication-social {
+            background: linear-gradient(45deg, #45b7d1, #96c93d);
+            box-shadow: 0 10px 20px rgba(69, 183, 209, 0.3);
+        }
+
+        .communication-social:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(69, 183, 209, 0.4);
+        }
+
+        /* Pages */
+        .flashcard-page, .academic-page {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        .back-button {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .code-snippet {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .snippet-header {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .snippet-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .copy-button {
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .copy-button.copied {
+            background: #28a745;
+            border-color: #28a745;
+        }
+
+        .snippet-content {
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            background: #ffffff;
+            color: #333;
+            min-height: 100px;
+            font-style: italic;
+            white-space: pre-wrap;
+        }
+
+        @media (max-width: 768px) {
+            .container, .flashcard-page, .academic-page {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            .main-button {
+                font-size: 1.1rem;
+                padding: 15px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Page -->
+    <div class="container" id="mainPage" style="display: block;">
+        <h1>AI Prompt Library</h1>
+        <p class="subtitle">Your comprehensive collection of AI prompts for every need</p>
+
+        <div class="buttons-container">
+            <button class="main-button academic-writing" onclick="showAcademicPage()">📚 Academic Writing</button>
+            <button class="main-button flashcard-creation" onclick="showFlashcardPage()">🗂️ Flashcard Creation</button>
+            <button class="main-button communication-social" onclick="showComingSoon('Communication/Social')">💬 Communication/Social</button>
+        </div>
+    </div>
+
+    <!-- Academic Writing Page -->
+    <div class="academic-page" id="academicPage" style="display: none;">
+        <button class="back-button" onclick="showMainPage()">← Back to Main</button>
+        <h1>Academic Writing Prompts</h1>
+        <p class="subtitle">Thoughtful prompts to support academic writing</p>
+
+        <div class="code-snippet">
+            <div class="snippet-header">
+                <span class="snippet-title">Discussion Post</span>
+                <button class="copy-button" onclick="copyToClipboard(this, 'discussionPost')">Copy</button>
+            </div>
+            <div class="snippet-content" id="discussionPost">
+Write a discussion post for a college-level humanities or social-science class. The tone should sound like a thoughtful student: use the first person ("I"), be reflective, and show personal engagement with the reading. Keep the style respectful, clear, and conversational—more like a discussion than a formal essay. Avoid over-formal academic jargon or long, complex sentences.
+
+Begin with a personal connection or reaction to the week’s readings. You can use a sentence starter such as “Based on this week’s reading, I began to think about…,” “As explored in this unit’s reading, I realized…,” or “This chapter was surprising for me because….”
+
+Clearly state your understanding of the core concept. Mention the author or authors by name and summarize or briefly quote a key idea or example, then explain why it stood out to you or how it connects to your point. For example, you might say, "[name] argues that…," "A moment that stayed with me was when [name] said…," or "According to the reading…."
+
+Reflect on what the reading made you think about, and connect it to your own understanding, experience, or questions. You might say, "From my point of view…," "I interpret this as meaning…," or "This made me realize that…."
+
+Conclude with a broader takeaway, a reflection on both positive and negative aspects, or a question for peers. You can end with something like, "Together, these texts show that…," "This left me wondering…," or "I think the challenge now is…."
+
+Keep the post between 200 and 300 words unless the assignment specifies otherwise. Don't include any em-dashes. Avoid overly formal connectors; use plain punctuation. Make sure each paragraph connects smoothly to the next. Include at least one brief quotation or paraphrase from the reading, and try to balance appreciation and critique by mentioning both liberating and problematic aspects of the concept.
+
+Ready? I will paste the resource & teacher instructions next.
+            </div>
+        </div>
+
+        <div class="code-snippet">
+            <div class="snippet-header">
+                <span class="snippet-title">Response Post</span>
+                <button class="copy-button" onclick="copyToClipboard(this, 'responsePost')">Copy</button>
+            </div>
+            <div class="snippet-content" id="responsePost">
+Write a response post to a classmate’s discussion post, their name is [enter name here]. The response should sound personal, conversational, and respectful — as if you are contributing to a classroom discussion online. Use the following guidance:
+
+Start with a friendly greeting using the classmate’s name, for example: “Hi [Name],” or “Hello [Name],” or “Hey [Name],”
+
+Acknowledge something specific from their post that you appreciated, found insightful, or that made you think. For example: “I really enjoyed your perspective on…,” “I thought the way you explained ___ was really clear…,” or “I hadn’t thought about it that way before, but your point about ___ really stood out to me…”
+
+Agree, expand, or gently challenge an idea by offering your own perspective or a related example from the readings or your experiences. For example: “I agree with you that ___, and I would add that…,” “I see where you’re coming from, but I wondered if…,” or “Reading Mingus made me think about what you said about ___…”
+
+Ask at least one open-ended question to invite further discussion. Keep it curious and respectful, for example: “What do you think about ___ in relation to what you said?” “Do you think this idea still applies today, or has it changed?” “I’d love to know your thoughts on ___.”
+
+Keep the tone warm and collegial — avoid being overly formal or critical. Aim for two or three short paragraphs (about 100–150 words). Don't use em-dashes. Use simple punctuation and natural transitions.
+
+Reference the readings briefly by naming the author or quoting a short phrase when relevant.
+
+End with a friendly sign-off or a note of appreciation, for example: “Thanks for sharing your thoughts,” “Looking forward to hearing more from you,” or “Great job on your post!”
+
+Ready? I will paste the peer response post next.
+            </div>
+        </div>
+    </div>
+
+    <!-- Flashcard Creation Page -->
+    <div class="flashcard-page" id="flashcardPage" style="display: none;">
+        <button class="back-button" onclick="showMainPage()">← Back to Main</button>
+        <h1>Flashcard Creation Prompts</h1>
+        <p class="subtitle">Ready-to-use prompts for creating effective flashcards</p>
+
+        <div class="code-snippet">
+            <div class="snippet-header">
+                <span class="snippet-title">Step 1. Derive Testable Concepts</span>
+                <button class="copy-button" onclick="copyToClipboard(this, 'snippet1')">Copy</button>
+            </div>
+            <div class="snippet-content" id="snippet1">
+I will give you a resource in text form (lecture notes, textbook excerpt, article, story, biography, or other written work).
+Your task is to:
+Extract all unique "testable concepts" (TC) from the resource. A testable concept is a distinct fact, term, relationship, formula, exception, process, cause-effect, application scenario, important date, important person, specific example question, OR, in the case of narrative works, the main idea, character actions or decisions, beliefs or motivations, misunderstandings or conflicts, feelings, and plot-related cause-and-effect events that could reasonably appear on an exam.
+Count every distinct piece of information as a separate TC. For example, "the cause of a phenomenon" and "the effect of a phenomenon" must be counted as two separate concepts, even if closely related.
+Adhere strictly to the word count for each concept – every concept must be a concise, scannable phrase between 5 and 15 words.
+Ignore fluff, filler sentences, or generic advice unless tied to a specific, testable idea.
+Err on the side of slightly overcounting rather than undercounting to ensure no testable points are missed.
+Present them as a numbered list. Provide the TC Score – the total number of unique testable concepts. If multiple concepts can be grouped under one broader idea, group them together but still count each subpoint separately for the TC Score.
+
+Output Format
+Testable Concepts:
+[Concept 1]
+[Concept 2]
+…
+TC Score: [Number]
+Ready? I will paste the resource next.
+            </div>
+        </div>
+
+        <div class="code-snippet">
+            <div class="snippet-header">
+                <span class="snippet-title">Step 2. Exam Questions</span>
+                <button class="copy-button" onclick="copyToClipboard(this, 'snippet2')">Copy</button>
+            </div>
+            <div class="snippet-content" id="snippet2">
+You are an expert test creator specializing in [subject/topic]. Your task is to generate 1 flashcard per Testable Concept practice exam question based strictly on the provided [file(s)/document(s)/flashcard set].
+
+Principles for Questions
+Atomic – One idea per question.
+✅ Good: “What does Kepler’s Third Law state about the ratio of orbital period and distance?”
+❎ Bad: “Explain all three of Kepler’s Laws.”
+
+Holistic – Integrate context or associations.
+✅ Good: “Why does cue overload make vague flashcards less effective? (Hint: think of the ‘white objects in your bedroom’ example.)”
+❎ Bad: “What is cue overload?”
+
+Future-Proof – Clear enough for your future self.
+✅ Good: “According to the article, why is ‘What does Kepler say?’ a poor question compared to specifying ‘Kepler’s Third Law ratio’?”
+❎ Bad: “What does Kepler say?”
+
+Question Requirements
+Types & Distribution:
+20% scenario-based multiple-choice (4 options, A–D)
+40% short answer (≤7-word model answers)
+40% fill-in-the-blank (use ____ for blanks)
+
+Scenario Requirement:
+Every multiple-choice question must start with a short (1–2 sentence) scenario involving a named person (e.g., “Marisol”) connected to the content, testing application, analysis, or synthesis of concepts. Names should vary and be culturally neutral.
+
+Content Source:
+Only use material from the provided source. Do not generalize or invent beyond it.
+
+Formatting
+Number questions sequentially.
+Multiple-choice questions: provide 4 options (A–D) and mark the correct answer directly below under Answer:.
+Short answer and fill-in-the-blank: provide concise model answers.
+Keep style, tone, and length consistent across all questions.
+
+Answer Key:
+Include a clean, numbered answer key at the end (format: 1. C, 2. A, 3. B…).
+            </div>
+        </div>
+
+        <div class="code-snippet">
+            <div class="snippet-header">
+                <span class="snippet-title">Step 3. Exam to Anki Conversion</span>
+                <button class="copy-button" onclick="copyToClipboard(this, 'snippet3')">Copy</button>
+            </div>
+            <div class="snippet-content" id="snippet3">
+You are an expert in preparing flashcards for Anki bulk import. Follow these rules exactly every time.
+INPUT: I will give you exam practice questions in any format (lists, markdown tables, text, images converted to text, etc.).
+OUTPUT FORMAT (strict):
+Produce plain text only (no explanations, no commentary, no headers, no code fences).
+Each line = one flashcard.
+Each line must contain exactly two fields separated by a single ; (space-semicolon-space).
+Field 1 (Front) = Question text + Question Choices (if any).
+Field 2 (Back) = Correct Answer(s).
+Do not add extra semicolons anywhere, if the source contains semicolons, replace them with commas before output.
+FRONT rules:
+If the source has choices, list them directly after the question in the same order as the source, formatted like: A. Choice1 B. Choice2 C. Choice3 with a single space between choices.
+If choices use numbers (1., 2., …), convert them to letters in-order (A., B., C., …).
+If no choices exist, the front is just the question text (no appended "Answer:" text or other tags).
+Trim leading/trailing whitespace, preserve the original wording and capitalization otherwise.
+BACK rules (exact):
+If the correct answer is one of the choices, the back must be the exact choice text including its letter prefix (e.g., A. Groups).
+If multiple answers are correct, list them in the order they appear on the front, separated by commas and a space (e.g., A. Red, C. Blue).
+For fill-in-the-blank(s), list the correct word/phrase(s) separated by commas in the natural order they appear in the question (e.g., mitosis, meiosis).
+If the correct answer cannot be determined from the source, put UNSURE as the back.
+PRESERVE MEANING: Do not change the meaning of any question or answer, do not invent information. Only normalize formatting as required above (whitespace, converting numeric choices to letters, replacing semicolons with commas).
+SPECIAL CHARACTERS & SAFETY:
+Replace any semicolons in question text or choices with commas before emitting output.
+Do not output HTML or markup.
+Do not include metadata, timestamps, line numbers, bullets, or numbering – only one flashcard per line.
+EXAMPLES (exact output lines – nothing else):  What defines clusters in statistics? A. Columns B. Groups C. Areas D. None of the above ; A. Groups  Complete the sentence: The capital of France is _____. ; Paris
+FINAL: Output only the final txt lines (one flashcard per line), nothing else.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation functions (ensure these exist so onclick handlers do not throw errors)
+        function showFlashcardPage() {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('flashcardPage').style.display = 'block';
+            document.getElementById('academicPage').style.display = 'none';
+        }
+
+        function showAcademicPage() {
+            document.getElementById('mainPage').style.display = 'none';
+            document.getElementById('academicPage').style.display = 'block';
+            document.getElementById('flashcardPage').style.display = 'none';
+        }
+
+        function showMainPage() {
+            document.getElementById('mainPage').style.display = 'block';
+            document.getElementById('flashcardPage').style.display = 'none';
+            document.getElementById('academicPage').style.display = 'none';
+        }
+
+        function showComingSoon(section) {
+            alert(section + ' prompts are coming soon! Stay tuned for updates.');
+        }
+
+        function copyToClipboard(button, snippetId) {
+            try {
+                const content = document.getElementById(snippetId).textContent.trim();
+
+                if (!content) {
+                    alert('No content to copy.');
+                    return;
+                }
+
+                navigator.clipboard.writeText(content).then(() => {
+                    const originalText = button.textContent;
+                    button.textContent = 'Copied!';
+                    button.classList.add('copied');
+
+                    setTimeout(() => {
+                        button.textContent = originalText;
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch((err) => {
+                    // Fallback for older browsers: create a temporary textarea
+                    const textarea = document.createElement('textarea');
+                    textarea.value = content;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        const originalText = button.textContent;
+                        button.textContent = 'Copied!';
+                        button.classList.add('copied');
+
+                        setTimeout(() => {
+                            button.textContent = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    } catch (fallbackErr) {
+                        alert('Copy failed. Please select the text and copy manually.');
+                    }
+                    document.body.removeChild(textarea);
+                });
+            } catch (e) {
+                console.error('copyToClipboard error', e);
+                alert('An error occurred while trying to copy.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.main-button');
+            buttons.forEach((button, index) => {
+                setTimeout(() => {
+                    button.style.opacity = '0';
+                    button.style.transform = 'translateY(20px)';
+                    button.style.transition = 'all 0.6s ease';
+
+                    setTimeout(() => {
+                        button.style.opacity = '1';
+                        button.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
